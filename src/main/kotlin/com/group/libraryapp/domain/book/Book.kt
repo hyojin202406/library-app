@@ -13,6 +13,7 @@ class Book(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id:Long? = null,
 ) {
+    // 코틀린의 초기화 블록
     init {
         if (name.isBlank())
             throw IllegalArgumentException("이름은 비어 있을 수 없습니다")

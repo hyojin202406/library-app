@@ -1,16 +1,12 @@
 package com.group.libraryapp.domain.user.loanhistory
 
-import com.group.libraryapp.domain.user.User
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import com.group.libraryapp.domain.user.JavaUser
+import javax.persistence.*
 
 @Entity
 class UserLoanHistory(
     @ManyToOne
-    val user: User,
+    val user: JavaUser,
 
     val bookName: String,
 
@@ -20,6 +16,14 @@ class UserLoanHistory(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 ) {
+    // JPA 기본 생성자
+    protected constructor() : this(
+        user = JavaUser("", null), // 임의의 기본값 설정 (더미 데이터)
+        bookName = "",
+        inReturn = false
+    )
+
+
     fun doReturn() {
         this.inReturn = true
     }
