@@ -2,7 +2,7 @@ package com.group.libraryapp.service.book
 
 import com.group.libraryapp.domain.book.Book
 import com.group.libraryapp.domain.book.BookRepository
-import com.group.libraryapp.domain.user.JavaUser
+import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.domain.user.UserRepository
 import com.group.libraryapp.domain.user.loanhistory.UserLoanHistory
 import com.group.libraryapp.domain.user.loanhistory.UserLoanHistoryRepository
@@ -44,12 +44,13 @@ class BookServiceTest @Autowired constructor(
         assertThat(books).hasSize(1)
         assertThat(books[0].name).isEqualTo("이상한 나라의 앨리스")
     }
+
     @Test
     @DisplayName("책 대출이 정상 동작한다")
     fun loanBookTest() {
         // given
         bookRepository.save(Book("이상한 나라의 엘리스"))
-        val savedUser = userRepository.save(JavaUser("최태현", null))
+        val savedUser = userRepository.save(User("최태현", null))
         val request = BookLoanRequest("최태현", "이상한 나라의 엘리스")
 
         // when
@@ -68,7 +69,7 @@ class BookServiceTest @Autowired constructor(
     fun loanBookFailTest() {
         // given
         bookRepository.save(Book("이상한 나라의 엘리스"))
-        val savedUser = userRepository.save(JavaUser("최태현", null))
+        val savedUser = userRepository.save(User("최태현", null))
         userLoanHistoryRepository.save(
             UserLoanHistory(savedUser, "이상한 나라의 엘리스", false)
         )
@@ -81,12 +82,13 @@ class BookServiceTest @Autowired constructor(
             assertThat(message).isEqualTo("진작 대출되어 있는 책입니다")
         }
     }
+
     @Test
     @DisplayName("책 반납이 정상 동작한다")
     fun returnBookTest() {
         // given
         bookRepository.save(Book("이상한 나라의 엘리스"))
-        val savedUser = userRepository.save(JavaUser("최태현", null))
+        val savedUser = userRepository.save(User("최태현", null))
         userLoanHistoryRepository.save(UserLoanHistory(savedUser, "이상한 나라의 엘리스", false))
         val request = BookReturnRequest("최태현", "이상한 나라의 엘리스")
 
