@@ -8,6 +8,7 @@ import com.group.libraryapp.domain.user.UserRepository
 import com.group.libraryapp.domain.user.loanhistory.UserLoanHistory
 import com.group.libraryapp.domain.user.loanhistory.UserLoanHistoryRepository
 import com.group.libraryapp.domain.user.loanhistory.UserLoanStatus
+import com.group.libraryapp.dto.book.BookStatResponse
 import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
@@ -102,6 +103,48 @@ class BookServiceTest @Autowired constructor(
         val results = userLoanHistoryRepository.findAll()
         assertThat(results).hasSize(1)
         assertThat(results[0].status).isEqualTo(UserLoanStatus.RETURNED)
+    }
+
+    @Test
+    @DisplayName("책 대여 권수를 정확히 확인한다.")
+    fun countLoanBookTest() {
+        // given
+        val savedUser = userRepository.save(User("최태현", null))
+        userLoanHistoryRepository.saveAll(listOf(
+            UserLoanHistory.fixture(savedUser, "A"),
+            UserLoanHistory.fixture(savedUser, "B", UserLoanStatus.RETURNED),
+            UserLoanHistory.fixture(savedUser, "C", UserLoanStatus.RETURNED),
+        ))
+
+        // when
+        val result = bookService.countLoanBook()
+
+        // then
+        assertThat(result).isEqualTo(1)
+    }
+
+    @Test
+    @DisplayName("분야별 책 권수를 정상 확인한다.")
+    fun getBookStatisticsTest() {
+        // given
+        bookRepository.saveAll(listOf(
+            Book.fixture("A", BookType.COMPUTER),
+            Book.fixture("B", BookType.COMPUTER),
+            Book.fixture("C", BookType.SCIENCE),
+
+        ))
+
+        // when
+        val results = bookService.getBookStatistics()
+
+        // then
+        assertThat(results).hasSize(2)
+        assertCount(results, BookType.COMPUTER, 2)
+        assertCount(results, BookType.SCIENCE, 1)
+    }
+
+    private fun assertCount(results: List<BookStatResponse>, type: BookType, count: Int) {
+        assertThat(results.first{ result -> result.type == type}.count).isEqualTo(count)
     }
 
 }

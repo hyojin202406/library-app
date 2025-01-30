@@ -5,5 +5,5 @@ enum class BookType {
     ECONOMY,
     SOCIERY,
     LANGUAGE,
-    SIENCE,
+    SCIENCE,
 }
