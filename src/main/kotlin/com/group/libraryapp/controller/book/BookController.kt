@@ -1,6 +1,6 @@
 package com.group.libraryapp.controller.book
 
-import com.group.libraryapp.dto.book.BookStatResponse
+import com.group.libraryapp.dto.book.response.BookStatResponse
 import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest

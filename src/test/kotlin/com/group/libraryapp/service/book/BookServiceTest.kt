@@ -8,7 +8,7 @@ import com.group.libraryapp.domain.user.UserRepository
 import com.group.libraryapp.domain.user.loanhistory.UserLoanHistory
 import com.group.libraryapp.domain.user.loanhistory.UserLoanHistoryRepository
 import com.group.libraryapp.domain.user.loanhistory.UserLoanStatus
-import com.group.libraryapp.dto.book.BookStatResponse
+import com.group.libraryapp.dto.book.response.BookStatResponse
 import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
@@ -139,11 +139,11 @@ class BookServiceTest @Autowired constructor(
 
         // then
         assertThat(results).hasSize(2)
-        assertCount(results, BookType.COMPUTER, 2)
-        assertCount(results, BookType.SCIENCE, 1)
+        assertCount(results, BookType.COMPUTER, 2L)
+        assertCount(results, BookType.SCIENCE, 1L)
     }
 
-    private fun assertCount(results: List<BookStatResponse>, type: BookType, count: Int) {
+    private fun assertCount(results: List<BookStatResponse>, type: BookType, count: Long) {
         assertThat(results.first{ result -> result.type == type}.count).isEqualTo(count)
     }
 

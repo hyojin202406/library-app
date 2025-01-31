@@ -6,7 +6,7 @@ import com.group.libraryapp.domain.user.User
 import com.group.libraryapp.domain.user.UserRepository
 import com.group.libraryapp.domain.user.loanhistory.UserLoanHistoryRepository
 import com.group.libraryapp.domain.user.loanhistory.UserLoanStatus
-import com.group.libraryapp.dto.book.BookStatResponse
+import com.group.libraryapp.dto.book.response.BookStatResponse
 import com.group.libraryapp.dto.book.request.BookLoanRequest
 import com.group.libraryapp.dto.book.request.BookRequest
 import com.group.libraryapp.dto.book.request.BookReturnRequest
@@ -46,13 +46,11 @@ class BookService(
 
     @Transactional(readOnly = true)
     fun countLoanBook(): Int {
-        return userLoanHistoryRepository.findAllByStatus(UserLoanStatus.LOANED).size
+        return userLoanHistoryRepository.countByStatus(UserLoanStatus.LOANED).toInt()
     }
 
     fun getBookStatistics(): List<BookStatResponse> {
-        return bookRepository.findAll() // List<Book>
-            .groupBy { book -> book.type } // Map<BookType, List<Book>>
-            .map { (type, book) -> BookStatResponse(type, book.size) } // List<BookStatResponse>
+        return bookRepository.getStats()
     }
 
 
